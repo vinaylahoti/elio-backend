@@ -12,3 +12,4 @@ class User(Base):
 
     goals = relationship("Goals", back_populates="user", uselist=False, cascade="all, delete-orphan")
     daily_logs = relationship("DailyLog", back_populates="user", cascade="all, delete-orphan")
+    state = relationship("UserState", back_populates="user", uselist=False, cascade="all, delete-orphan")

@@ -2,6 +2,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.models.daily_log import DailyLog
+from app.models.goals import Goals
 from app.models.user import User
 from app.schemas.log import DailyLogCreate
 
@@ -10,6 +11,10 @@ def create_daily_log(db: Session, payload: DailyLogCreate) -> DailyLog:
     user = db.query(User).filter(User.id == payload.user_id).first()
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    goals = db.query(Goals).filter(Goals.user_id == payload.user_id).first()
+    if not goals:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Goals not found")
 
     existing_log = (
         db.query(DailyLog)
@@ -20,6 +25,12 @@ def create_daily_log(db: Session, payload: DailyLogCreate) -> DailyLog:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Daily log already exists for this date",
+        )
+
+    if payload.protein > goals.protein_target * 2:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Protein value unrealistic",
         )
 
     daily_log = DailyLog(**payload.model_dump())

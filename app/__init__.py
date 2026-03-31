@@ -1,1 +1,1 @@
-# Elio backend package.
+# Nini backend package.

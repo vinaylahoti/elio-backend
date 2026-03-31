@@ -4,8 +4,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    app_name: str = "Elio API"
-    database_url: str = "sqlite:///./elio.db"
+    app_name: str = "Nini API"
+    database_url: str = "sqlite:///./nini.db"
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 

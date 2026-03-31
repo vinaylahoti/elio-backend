@@ -6,11 +6,11 @@ from pydantic import BaseModel, Field
 class DailyLogCreate(BaseModel):
     user_id: int
     date: date
-    gym: bool = False
-    protein: int = Field(ge=0, le=500)
-    alcohol: bool = False
-    smoking: bool = False
-    sleep: bool = False
+    gym: bool = Field(...)
+    protein: int = Field(ge=0, le=300)
+    alcohol: bool = Field(...)
+    smoking: bool = Field(...)
+    sleep: int = Field(ge=0, le=24)
     mood: int = Field(ge=1, le=4)
 
 

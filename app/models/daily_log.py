@@ -17,7 +17,7 @@ class DailyLog(Base):
     protein: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     alcohol: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     smoking: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
-    sleep: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
-    mood: Mapped[int] = mapped_column(Integer, nullable=False)
+    sleep: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    mood: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
 
     user = relationship("User", back_populates="daily_logs")

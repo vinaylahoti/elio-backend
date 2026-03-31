@@ -33,7 +33,7 @@ def generate_weekly_report(db: Session, user_id: int) -> WeeklyReport:
     avg_protein = round(sum(log.protein for log in logs) / len(logs), 2) if logs else 0.0
     alcohol_days = sum(1 for log in logs if log.alcohol)
     smoking_days = sum(1 for log in logs if log.smoking)
-    sleep_consistency = sum(1 for log in logs if log.sleep)
+    sleep_consistency = sum(1 for log in logs if log.sleep >= 7)
 
     average_score = (
         round(sum(calculate_daily_score(log=log, protein_target=goals.protein_target) for log in logs) / len(logs), 2)
