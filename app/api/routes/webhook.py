@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import Response
 
+from app.services.ai_service import generate_step_reply
 from app.utils.state import get_user_state, set_user_state
 
 
@@ -18,24 +19,28 @@ async def whatsapp_webhook(request: Request):
     step = state["step"]
 
     if step == "start":
-        reply = "Gym done today?"
-        set_user_state(phone, "gym")
+        next_step = "gym"
+        set_user_state(phone, next_step)
+        reply = generate_step_reply(step, body, next_step)
     elif step == "gym":
         if message in {"yes", "y"}:
-            reply = "What did you train?"
-            set_user_state(phone, "workout_type")
+            next_step = "workout_type"
         else:
-            reply = "Protein intake today?"
-            set_user_state(phone, "protein")
+            next_step = "protein"
+        set_user_state(phone, next_step)
+        reply = generate_step_reply(step, body, next_step)
     elif step == "workout_type":
-        reply = "Protein intake today?"
-        set_user_state(phone, "protein")
+        next_step = "protein"
+        set_user_state(phone, next_step)
+        reply = generate_step_reply(step, body, next_step)
     elif step == "protein":
-        reply = "Sleep hours last night?"
-        set_user_state(phone, "sleep")
+        next_step = "sleep"
+        set_user_state(phone, next_step)
+        reply = generate_step_reply(step, body, next_step)
     else:
-        reply = "Logged 👍"
+        next_step = "done"
         set_user_state(phone, "start")
+        reply = generate_step_reply(step, body, next_step)
 
     twiml = f"""<?xml version="1.0" encoding="UTF-8"?>
 <Response>
