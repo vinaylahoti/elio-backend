@@ -7,7 +7,12 @@ from app.models import DailyLog, Goals, User, UserState  # noqa: F401
 
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="Nini API", version="1.0.0")
+app = FastAPI(
+    title="Nini API",
+    version="1.0.0",
+    docs_url="/",
+    redoc_url=None,
+)
 
 app.include_router(user.router, tags=["user"])
 app.include_router(goals.router, tags=["goals"])
